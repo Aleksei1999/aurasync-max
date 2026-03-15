@@ -1,0 +1,293 @@
+@import "tailwindcss";
+
+:root {
+  /* AuraSync Color Palette - Soft Pastels */
+  --aura-mint: #B8E0D4;
+  --aura-mint-light: #D4EFE9;
+  --aura-mint-dark: #8BCFC0;
+
+  --aura-peach: #F5CEB8;
+  --aura-peach-light: #FAEADF;
+  --aura-peach-dark: #E8B598;
+
+  --aura-lavender: #D4C5E2;
+  --aura-lavender-light: #EBE4F2;
+  --aura-lavender-dark: #B9A6CC;
+
+  --aura-sage: #C5D5CB;
+  --aura-cream: #FDF8F3;
+  --aura-slate: #5C6B73;
+
+  /* Functional colors */
+  --background: #F8FAFA;
+  --background-card: #FFFFFF;
+  --foreground: #2D3436;
+  --foreground-muted: #636E72;
+
+  /* Time of day themes */
+  --morning-gradient: linear-gradient(135deg, #FAEADF 0%, #F5CEB8 50%, #FFE4D4 100%);
+  --day-gradient: linear-gradient(135deg, #D4EFE9 0%, #B8E0D4 50%, #C5D5CB 100%);
+  --evening-gradient: linear-gradient(135deg, #EBE4F2 0%, #D4C5E2 50%, #C5B8D9 100%);
+
+  /* Shadows */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-button: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-aura-mint: var(--aura-mint);
+  --color-aura-mint-light: var(--aura-mint-light);
+  --color-aura-mint-dark: var(--aura-mint-dark);
+  --color-aura-peach: var(--aura-peach);
+  --color-aura-peach-light: var(--aura-peach-light);
+  --color-aura-peach-dark: var(--aura-peach-dark);
+  --color-aura-lavender: var(--aura-lavender);
+  --color-aura-lavender-light: var(--aura-lavender-light);
+  --color-aura-lavender-dark: var(--aura-lavender-dark);
+  --color-aura-sage: var(--aura-sage);
+  --color-aura-cream: var(--aura-cream);
+  --color-aura-slate: var(--aura-slate);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Gradient backgrounds for time of day */
+.bg-morning {
+  background: var(--morning-gradient);
+}
+
+.bg-day {
+  background: var(--day-gradient);
+}
+
+.bg-evening {
+  background: var(--evening-gradient);
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Card styles */
+.card {
+  background: var(--background-card);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.card-soft {
+  background: var(--background-card);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Button styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--aura-mint) 0%, var(--aura-mint-dark) 100%);
+  color: var(--foreground);
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-button);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-secondary {
+  background: var(--background-card);
+  color: var(--foreground);
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.2s ease;
+}
+
+/* Animated gradient background */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Pulse animation for SOS button */
+@keyframes pulse-soft {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Slide up animation */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+/* Animate slide up (for modals) */
+.animate-slide-up {
+  animation: animate-slide-up 0.3s ease-out;
+}
+
+@keyframes animate-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Animate slide down (for toasts) */
+.animate-slide-down {
+  animation: animate-slide-down 0.3s ease-out;
+}
+
+@keyframes animate-slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Progress bar styles */
+.progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Emotion indicator colors */
+.emotion-happy { background: linear-gradient(135deg, #FFD93D 0%, #F5CEB8 100%); }
+.emotion-calm { background: linear-gradient(135deg, #B8E0D4 0%, #8BCFC0 100%); }
+.emotion-anxious { background: linear-gradient(135deg, #E8B598 0%, #D4A574 100%); }
+.emotion-sad { background: linear-gradient(135deg, #B9A6CC 0%, #9B8AB8 100%); }
+.emotion-energized { background: linear-gradient(135deg, #FFE4D4 0%, #F5CEB8 100%); }
+
+/* Safe area insets for mobile */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Tab bar spacing */
+.pb-tab-bar {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Scale in animation (for achievement popups) */
+.animate-scale-in {
+  animation: animate-scale-in 0.3s ease-out;
+}
+
+@keyframes animate-scale-in {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
