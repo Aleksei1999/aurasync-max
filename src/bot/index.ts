@@ -10,8 +10,8 @@ if (!BOT_TOKEN) {
 
 const bot = new Bot(BOT_TOKEN);
 
-// URL мини-приложения
-const WEBAPP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://aurasync-max.vercel.app';
+// URL мини-приложения (deep link для открытия внутри MAX)
+const WEBAPP_URL = 'https://max.ru/id030698930459_bot?startapp';
 
 // Регистрируем команды бота
 bot.api.setMyCommands([
@@ -85,12 +85,17 @@ bot.command('help', async (ctx) => {
 
 // Обработка события bot_started (когда пользователь начинает диалог)
 bot.on('bot_started', async (ctx) => {
-  const user = ctx.update.message?.sender;
+  const user = ctx.update.user;
   const userName = user?.name || 'друг';
-  const payload = (ctx.update as { payload?: string }).payload;
+  const payload = ctx.update.payload;
+
+  // Для deep link с параметром: https://max.ru/bot?startapp=param
+  const webappUrl = payload
+    ? `https://max.ru/id030698930459_bot?startapp=${payload}`
+    : WEBAPP_URL;
 
   const keyboard = Keyboard.inlineKeyboard([
-    [Keyboard.button.link('Открыть AuraSync', payload ? `${WEBAPP_URL}?ref=${payload}` : WEBAPP_URL)],
+    [Keyboard.button.link('Открыть AuraSync', webappUrl)],
   ]);
 
   await ctx.reply(
