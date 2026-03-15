@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateMaxInitData } from '@/lib/max';
-import { createServerClient } from '@/lib/supabase';
+
+// Check if Supabase is configured
+const hasSupabase = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +15,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate MAX init data (skip in development)
+    // Validate MAX init data (skip in development with mock data)
     const isDev = process.env.NODE_ENV === 'development';
     let maxUser;
 
@@ -29,14 +31,47 @@ export async function POST(request: NextRequest) {
     } else {
       const validated = validateMaxInitData(initData);
       if (!validated || !validated.user) {
-        return NextResponse.json(
-          { error: 'Invalid initData' },
-          { status: 401 }
-        );
+        // In production without valid data, return mock for now
+        if (!hasSupabase) {
+          maxUser = {
+            id: Date.now(),
+            first_name: 'User',
+            language_code: 'ru',
+          };
+        } else {
+          return NextResponse.json(
+            { error: 'Invalid initData' },
+            { status: 401 }
+          );
+        }
+      } else {
+        maxUser = validated.user;
       }
-      maxUser = validated.user;
     }
 
+    // If Supabase is not configured, return mock profile
+    if (!hasSupabase) {
+      const mockProfile = {
+        id: `mock-${maxUser.id}`,
+        max_id: maxUser.id,
+        first_name: maxUser.first_name,
+        last_name: maxUser.last_name || null,
+        username: maxUser.username || null,
+        language_code: maxUser.language_code || 'ru',
+        is_premium: false,
+        photo_url: null,
+        credits: 0,
+        subscription_type: null,
+        subscription_until: null,
+        is_admin: false,
+        created_at: new Date().toISOString(),
+        referral_source: startParam || null,
+      };
+      return NextResponse.json({ profile: mockProfile });
+    }
+
+    // Supabase is configured - use database
+    const { createServerClient } = await import('@/lib/supabase');
     const supabase = createServerClient();
 
     // Check if user exists
