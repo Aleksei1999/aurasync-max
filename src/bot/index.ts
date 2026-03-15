@@ -1,4 +1,4 @@
-import { Bot, Keyboard, button } from '@maxhub/max-bot-api';
+import { Bot, Keyboard } from '@maxhub/max-bot-api';
 
 // Получаем токен из переменных окружения
 const BOT_TOKEN = process.env.MAX_BOT_TOKEN;
@@ -31,11 +31,11 @@ bot.api.setMyCommands([
 
 // Обработка команды /start
 bot.command('start', async (ctx) => {
-  const user = ctx.user;
+  const user = ctx.update.message?.sender;
   const userName = user?.name || 'друг';
 
   const keyboard = Keyboard.inlineKeyboard([
-    [button.link('Открыть AuraSync', WEBAPP_URL)],
+    [Keyboard.button.link('Открыть AuraSync', WEBAPP_URL)],
   ]);
 
   await ctx.reply(
@@ -54,7 +54,7 @@ bot.command('start', async (ctx) => {
 // Обработка команды /app
 bot.command('app', async (ctx) => {
   const keyboard = Keyboard.inlineKeyboard([
-    [button.link('Открыть AuraSync', WEBAPP_URL)],
+    [Keyboard.button.link('Открыть AuraSync', WEBAPP_URL)],
   ]);
 
   await ctx.reply(
@@ -66,7 +66,7 @@ bot.command('app', async (ctx) => {
 // Обработка команды /help
 bot.command('help', async (ctx) => {
   const keyboard = Keyboard.inlineKeyboard([
-    [button.link('Открыть приложение', WEBAPP_URL)],
+    [Keyboard.button.link('Открыть приложение', WEBAPP_URL)],
   ]);
 
   await ctx.reply(
@@ -85,12 +85,12 @@ bot.command('help', async (ctx) => {
 
 // Обработка события bot_started (когда пользователь начинает диалог)
 bot.on('bot_started', async (ctx) => {
-  const user = ctx.user;
+  const user = ctx.update.message?.sender;
   const userName = user?.name || 'друг';
-  const payload = ctx.update.payload;
+  const payload = (ctx.update as { payload?: string }).payload;
 
   const keyboard = Keyboard.inlineKeyboard([
-    [button.link('Открыть AuraSync', payload ? `${WEBAPP_URL}?ref=${payload}` : WEBAPP_URL)],
+    [Keyboard.button.link('Открыть AuraSync', payload ? `${WEBAPP_URL}?ref=${payload}` : WEBAPP_URL)],
   ]);
 
   await ctx.reply(
@@ -103,11 +103,11 @@ bot.on('bot_started', async (ctx) => {
 // Обработка любых текстовых сообщений
 bot.on('message_created', async (ctx) => {
   // Игнорируем команды (они обрабатываются отдельно)
-  const text = ctx.message?.body?.text;
+  const text = ctx.update.message?.body?.text;
   if (!text || text.startsWith('/')) return;
 
   const keyboard = Keyboard.inlineKeyboard([
-    [button.link('Открыть AuraSync', WEBAPP_URL)],
+    [Keyboard.button.link('Открыть AuraSync', WEBAPP_URL)],
   ]);
 
   await ctx.reply(
